@@ -1,7 +1,8 @@
-import { ConflictException, InternalServerErrorException } from "@nestjs/common";
+import { ConflictException, Injectable, InternalServerErrorException } from "@nestjs/common";
 import { ProductEntity } from "src/domain/entities/product.entity";
 import { ProductRepositoryPort } from "src/domain/ports/product-repository.port";
 
+@Injectable()
 export class CreateProductUseCase {
     constructor(private readonly productRepository: ProductRepositoryPort) { }
 
