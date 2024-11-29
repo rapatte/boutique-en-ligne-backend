@@ -23,6 +23,10 @@ export class ProductRepository implements ProductRepositoryPort {
         return this.repository.findOneBy({id});
     }
 
+    findOneByName(name: string): Promise<ProductEntity> {
+        return this.repository.findOneBy({name})
+    }
+
     update(id: number, product: Partial<ProductEntity>): Promise<ProductEntity | null> {
         return this.repository.save({id, ...product});
     }
