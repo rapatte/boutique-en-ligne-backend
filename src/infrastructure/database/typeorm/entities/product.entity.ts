@@ -14,9 +14,9 @@ export class ProductEntity {
     @Column({type: 'decimal', precision: 10, scale: 2})
     price: number;
 
-    @CreateDateColumn({type: 'timestamp'})
+    @CreateDateColumn({type: 'timestamp', default: () => 'CURRENT_TIMESTAMP'})
     createdAt: Date;
 
-    @CreateDateColumn({type: 'timestamp'})
+    @CreateDateColumn({type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP'})
     updatedAt: Date;
 }
