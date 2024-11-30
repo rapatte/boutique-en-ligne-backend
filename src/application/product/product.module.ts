@@ -4,11 +4,27 @@ import { ProductEntity } from "src/infrastructure/database/typeorm/entities/prod
 import { ProductController } from "./product.controller";
 import { ProductService } from "./product.service";
 import { ProductRepository } from "src/infrastructure/database/typeorm/adapters/product.repository";
+import { CreateProductUseCase } from "./{use-cases}/create-product.use-case";
+import { GetAllProductUseCase } from "./{use-cases}/getall-product.use-case";
+import { GetOneProductById } from "./{use-cases}/getonebyid-product.use-case";
+import { UpdateProductUseCase } from "./{use-cases}/update-product.use-case";
+import { DeleteProductUseCase } from "./{use-cases}/delete-product.use-case";
 
 @Module({
     imports: [TypeOrmModule.forFeature([ProductEntity])],
     controllers: [ProductController],
-    providers: [ProductService, ProductRepository],
+    providers: [
+        ProductService,
+        {
+            provide: 'ProductRepositoryPort', // Nom explicite pour le port
+            useClass: ProductRepository, // Liaison avec l'implémentation concrète
+        },
+        CreateProductUseCase,
+        GetAllProductUseCase,
+        GetOneProductById,
+        UpdateProductUseCase,
+        DeleteProductUseCase,
+    ],
     exports: [ProductService],
 })
 
