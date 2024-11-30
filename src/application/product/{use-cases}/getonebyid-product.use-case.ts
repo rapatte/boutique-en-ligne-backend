@@ -1,10 +1,13 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
+import { Inject, Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
 import { ProductEntity } from "src/domain/entities/product.entity";
 import { ProductRepositoryPort } from "src/domain/ports/product-repository.port";
 
 @Injectable()
 export class GetOneProductById {
-    constructor(private readonly productRepository: ProductRepositoryPort) {}
+    constructor(
+        @Inject('ProductRepositoryPort')
+        private readonly productRepository: ProductRepositoryPort
+    ) {}
 
     async execute(id: number): Promise<ProductEntity> {
         try {

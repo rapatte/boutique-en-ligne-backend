@@ -1,18 +1,13 @@
-import { ConflictException, Injectable, InternalServerErrorException } from "@nestjs/common";
+import { ConflictException, Inject, Injectable, InternalServerErrorException } from "@nestjs/common";
 import { ProductEntity } from "src/domain/entities/product.entity";
 import { ProductRepositoryPort } from "src/domain/ports/product-repository.port";
 
 @Injectable()
 export class CreateProductUseCase {
-    constructor(private readonly productRepository: ProductRepositoryPort) { }
-
-    /*
-    * Exécute le cas d'utilisation pour créer un produit.
-    * @param product - Les données du produit à créer.
-    * @returns Le produit créé.
-    * @throws ConflictException si un produit avec le même ID existe déjà.
-    * @throws InternalServerErrorException si une erreur imprévue se produit.
-    */
+    constructor(
+        @Inject('ProductRepositoryPort')
+        private readonly productRepository: ProductRepositoryPort
+    ) { }
 
     async execute(product: ProductEntity): Promise<ProductEntity> {
         try {
