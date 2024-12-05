@@ -19,7 +19,7 @@ export class UserRepository implements UserRepositoryPort {
         return this.repository.find();
     }
 
-    findOneById(id: number): Promise<UserEntity | null> {
+    findOneById(id: string): Promise<UserEntity | null> {
         return this.repository.findOneBy({id});
     }
 
@@ -27,11 +27,11 @@ export class UserRepository implements UserRepositoryPort {
         return this.repository.findOneBy({email});
     }
 
-    update(id: number, user: Partial<UserEntity>): Promise<UserEntity | null> {
+    update(id: string, user: Partial<UserEntity>): Promise<UserEntity | null> {
         return this.repository.save({id, ...user});
     }
 
-    async delete(id: number): Promise<boolean> {
+    async delete(id: string): Promise<boolean> {
         const result = await this.repository.delete(id)
         return result.affected > 0;
     }

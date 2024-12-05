@@ -1,9 +1,10 @@
+import { ProductDto } from "src/shared/dtos/product.dto";
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('products')
 export class ProductEntity {
-    @PrimaryGeneratedColumn()
-    id: number;
+    @PrimaryGeneratedColumn('uuid')
+    id?: string;
 
     @Column({length: 255})
     name: string;
@@ -15,8 +16,16 @@ export class ProductEntity {
     price: number;
 
     @CreateDateColumn({type: 'timestamp'})
-    createdAt: Date;
+    createdAt?: Date;
 
     @CreateDateColumn({type: 'timestamp'})
-    updatedAt: Date;
+    updatedAt?: Date;
+
+    static fromDto(dto: ProductDto): ProductEntity {
+        const entity = new ProductEntity();
+        entity.name = dto.name;
+        entity.description = dto.description;
+        entity.price = dto.price;
+        return entity;
+    }
 }
