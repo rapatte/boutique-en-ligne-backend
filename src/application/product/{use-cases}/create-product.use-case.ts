@@ -1,6 +1,7 @@
-import { ConflictException, Inject, Injectable, InternalServerErrorException } from "@nestjs/common";
-import { ProductEntity } from "src/domain/entities/product.entity";
+import { BadRequestException, ConflictException, ForbiddenException, Inject, Injectable, InternalServerErrorException } from "@nestjs/common";
+import { ProductEntityDomain } from "src/domain/entities/product.entity";
 import { ProductRepositoryPort } from "src/domain/ports/product-repository.port";
+import { ProductDto } from "src/shared/dtos/product.dto";
 
 @Injectable()
 export class CreateProductUseCase {
@@ -9,20 +10,35 @@ export class CreateProductUseCase {
         private readonly productRepository: ProductRepositoryPort
     ) { }
 
-    async execute(product: ProductEntity): Promise<ProductEntity> {
+    async execute(productDto: ProductDto): Promise<ProductEntityDomain> {
+        const product = new ProductEntityDomain(productDto)
         try {
             const existingProduct = await this.productRepository.findOneById(product.id);
+
             if (existingProduct) {
                 throw new ConflictException('Un produit avec cet id existe déjà.')
             }
-
-            const createdProduct = await this.productRepository.create(product);
-            return createdProduct;
-        } catch (error) {
-            if (error instanceof ConflictException) {
-                throw error; // Si erreur connue
+            if (
+                !productDto.price ||
+                !productDto.description ||
+                !productDto.name
+            ) {
+                throw new BadRequestException('Caractéristique(s) du produit manquante(s).')
             }
-            throw new InternalServerErrorException('Erreur lors de la création du produit.')
+            if (typeof productDto.price !== 'number') {
+                throw new ForbiddenException('Le prix doit être un nombre.')
+            }
+
+            return await this.productRepository.create(product);
+        } catch (error) {
+            if (
+                error instanceof ConflictException ||
+                error instanceof ForbiddenException ||
+                error instanceof BadRequestException
+            ) {
+                throw error;
+            }
+            throw new InternalServerErrorException('Erreur serveur lors de la création du produit.')
         }
     }
 }

@@ -8,7 +8,7 @@ export class DeleteProductUseCase {
         private readonly productRepository: ProductRepositoryPort
     ) {}
 
-    async execute(id: number): Promise<boolean> {
+    async execute(id: string): Promise<boolean> {
         try {
             const product = await this.productRepository.findOneById(id);
             if (!product) {

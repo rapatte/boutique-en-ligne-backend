@@ -1,5 +1,5 @@
 import { Inject, Injectable, InternalServerErrorException } from "@nestjs/common";
-import { ProductEntity } from "src/domain/entities/product.entity";
+import { ProductEntityDomain } from "src/domain/entities/product.entity";
 import { ProductRepositoryPort } from "src/domain/ports/product-repository.port";
 
 @Injectable()
@@ -9,7 +9,7 @@ export class GetAllProductUseCase {
         private readonly productRepository: ProductRepositoryPort
     ) {}
 
-    async execute(): Promise<ProductEntity[]> {
+    async execute(): Promise<ProductEntityDomain[]> {
         try {
             return this.productRepository.findAll();
         } catch (error) {

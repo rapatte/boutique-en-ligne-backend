@@ -1,5 +1,5 @@
 import { ConflictException, Inject, Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
-import { ProductEntity } from "src/domain/entities/product.entity";
+import { ProductEntityDomain } from "src/domain/entities/product.entity";
 import { ProductRepositoryPort } from "src/domain/ports/product-repository.port";
 
 @Injectable()
@@ -9,7 +9,7 @@ export class UpdateProductUseCase {
         private readonly productRepository: ProductRepositoryPort
     ) {}
 
-    async execute(id: number, updatedProduct: Partial<ProductEntity>): Promise<ProductEntity> {
+    async execute(id: string, updatedProduct: Partial<ProductEntityDomain>): Promise<ProductEntityDomain> {
         try {
             const existingProduct = await this.productRepository.findOneById(id);
             if (!existingProduct) {

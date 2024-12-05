@@ -1,5 +1,5 @@
 import { Inject, Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
-import { ProductEntity } from "src/domain/entities/product.entity";
+import { ProductEntityDomain } from "src/domain/entities/product.entity";
 import { ProductRepositoryPort } from "src/domain/ports/product-repository.port";
 
 @Injectable()
@@ -9,7 +9,7 @@ export class GetOneProductById {
         private readonly productRepository: ProductRepositoryPort
     ) {}
 
-    async execute(id: number): Promise<ProductEntity> {
+    async execute(id: string): Promise<ProductEntityDomain> {
         try {
             const product = await this.productRepository.findOneById(id);
             if (!product) {
