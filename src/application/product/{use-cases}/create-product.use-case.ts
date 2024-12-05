@@ -2,6 +2,7 @@ import { BadRequestException, ConflictException, ForbiddenException, Inject, Inj
 import { ProductEntityDomain } from "src/domain/entities/product.entity";
 import { ProductRepositoryPort } from "src/domain/ports/product-repository.port";
 import { ProductDto } from "src/shared/dtos/product.dto";
+import { v4 } from "uuid";
 
 @Injectable()
 export class CreateProductUseCase {
@@ -13,10 +14,12 @@ export class CreateProductUseCase {
     async execute(productDto: ProductDto): Promise<ProductEntityDomain> {
         const product = new ProductEntityDomain(productDto)
         try {
+            if (product.id == undefined) {
+                product.id = v4();
+            }
             const existingProduct = await this.productRepository.findOneById(product.id);
-
             if (existingProduct) {
-                throw new ConflictException('Un produit avec cet id existe déjà.')
+                throw new ConflictException(`Un produit avec l'id ${product.id} existe déjà.`)
             }
             if (
                 !productDto.price ||
