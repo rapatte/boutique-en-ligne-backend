@@ -1,10 +1,10 @@
-import { ProductEntity } from "../entities/product.entity";
+import { ProductEntityDomain } from "../entities/product.entity";
 
 export interface ProductRepositoryPort {
-    create(product: ProductEntity): Promise<ProductEntity>;
-    findAll(): Promise<ProductEntity[] | null>;
-    findOneById(id: number): Promise<ProductEntity | null>;
-    findOneByName(name: string): Promise<ProductEntity>;
-    update(id: number, product: Partial<ProductEntity>): Promise<ProductEntity | null>;
-    delete(id: number): Promise<boolean>;
+    create(product: ProductEntityDomain): Promise<ProductEntityDomain>;
+    findAll(): Promise<ProductEntityDomain[] | null>;
+    findOneById(id: string): Promise<ProductEntityDomain | null>;
+    findOneByName(name: string): Promise<ProductEntityDomain>;
+    update(id: string, product: Partial<ProductEntityDomain>): Promise<ProductEntityDomain | null>;
+    delete(id: string): Promise<boolean>;
 }
