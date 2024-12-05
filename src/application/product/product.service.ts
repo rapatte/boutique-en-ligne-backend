@@ -4,7 +4,7 @@ import { GetAllProductUseCase } from "./{use-cases}/getall-product.use-case";
 import { GetOneProductById } from "./{use-cases}/getonebyid-product.use-case";
 import { UpdateProductUseCase } from "./{use-cases}/update-product.use-case";
 import { DeleteProductUseCase } from "./{use-cases}/delete-product.use-case";
-import { ProductEntity } from "src/domain/entities/product.entity";
+import { ProductEntityDomain } from "src/domain/entities/product.entity";
 
 @Injectable()
 export class ProductService {
@@ -16,23 +16,23 @@ export class ProductService {
         private readonly deleteProductUseCase: DeleteProductUseCase,
     ) { }
 
-    createProduct(product: ProductEntity): Promise<ProductEntity> {
+    createProduct(product: ProductEntityDomain): Promise<ProductEntityDomain> {
         return this.createProductUseCase.execute(product);
     }
 
-    getAllProducts(): Promise<ProductEntity[]> {
+    getAllProducts(): Promise<ProductEntityDomain[]> {
         return this.getallProductUseCase.execute();
     }
 
-    getOneProductById(id: number): Promise<ProductEntity> {
+    getOneProductById(id: string): Promise<ProductEntityDomain> {
         return this.getOneProductByIdUseCase.execute(id);
     }
 
-    updateProduct(id: number, product: Partial<ProductEntity>): Promise<ProductEntity> {
+    updateProduct(id: string, product: Partial<ProductEntityDomain>): Promise<ProductEntityDomain> {
         return this.updateProductUseCase.execute(id, product);
     }
 
-    DeleteProduct(id: number): Promise<boolean> {
+    DeleteProduct(id: string): Promise<boolean> {
         return this.deleteProductUseCase.execute(id);
     }
 }

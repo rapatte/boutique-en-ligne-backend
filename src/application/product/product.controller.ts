@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, ParseIntPipe, Patch, Post } from "@nestjs/common";
 import { ProductService } from "./product.service";
-import { ProductEntity } from "src/domain/entities/product.entity";
+import { ProductEntityDomain } from "src/domain/entities/product.entity";
+import { ProductDto } from "src/shared/dtos/product.dto";
 
 @Controller('products')
 export class ProductController {
@@ -8,34 +9,34 @@ export class ProductController {
 
     @Post()
     @HttpCode(HttpStatus.CREATED)
-    async createProduct(@Body() product: ProductEntity): Promise<ProductEntity> {
-        return await this.productService.createProduct(product);
+    async createProduct(@Body() productDto: ProductDto): Promise<ProductEntityDomain> {
+        return await this.productService.createProduct(productDto);
     }
 
     @Get()
     @HttpCode(HttpStatus.OK)
-    async getAllProducts(): Promise<ProductEntity[]> {
+    async getAllProducts(): Promise<ProductEntityDomain[]> {
         return await this.productService.getAllProducts();
     }
 
     @Get(':id')
     @HttpCode(HttpStatus.OK)
-    async getOneById(@Param('id', ParseIntPipe) id: number): Promise<ProductEntity> {
+    async getOneById(@Param('id') id: string): Promise<ProductEntityDomain> {
         return await this.productService.getOneProductById(id);
     }
-
+ 
     @Patch(':id')
     @HttpCode(HttpStatus.OK)
     async updateProduct(
-        @Param('id', ParseIntPipe) id: number,
-        @Body() updatedProduct: Partial<ProductEntity>
-    ): Promise<ProductEntity> {
+        @Param('id') id: string,
+        @Body() updatedProduct: Partial<ProductEntityDomain>
+    ): Promise<ProductEntityDomain> {
         return await this.productService.updateProduct(id, updatedProduct);
     }
 
     @Delete(':id')
     @HttpCode(HttpStatus.OK)
-    async deleteProduct(@Param('id', ParseIntPipe) id: number): Promise<Boolean> {
+    async deleteProduct(@Param('id') id: string): Promise<Boolean> {
         return await this.productService.DeleteProduct(id);
     }
 }
