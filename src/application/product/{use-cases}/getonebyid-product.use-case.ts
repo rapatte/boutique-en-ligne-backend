@@ -16,7 +16,7 @@ export class GetOneProductById {
                 throw new NotFoundException(`Le produit avec l'id ${id} est introuvable.`)
             }
 
-            return this.productRepository.findOneById(id);
+            return product;
         } catch (error) {
             if (error instanceof NotFoundException) {
                 throw error;
