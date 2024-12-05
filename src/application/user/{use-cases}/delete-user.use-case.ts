@@ -5,7 +5,7 @@ import { UserRepositoryPort } from "src/domain/ports/user-repository.port";
 export class DeleteUserUseCase {
     constructor(private readonly userRepository: UserRepositoryPort) { }
 
-    async execute(id: number): Promise<boolean> {
+    async execute(id: string): Promise<boolean> {
         try {
             const user = await this.userRepository.findOneById(id);
             if (!user) {

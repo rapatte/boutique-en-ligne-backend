@@ -6,7 +6,7 @@ import { UserRepositoryPort } from "src/domain/ports/user-repository.port";
 export class GetOneUserById {
     constructor(private readonly userRepository: UserRepositoryPort) { }
 
-    async execute(id: number): Promise<UserEntity> {
+    async execute(id: string): Promise<UserEntity> {
         try {
             const user = await this.userRepository.findOneById(id);
             if (!user) {

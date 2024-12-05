@@ -6,7 +6,7 @@ import { UserRepositoryPort } from "src/domain/ports/user-repository.port";
 export class UpdateUserUseCase {
     constructor(private readonly userRepository: UserRepositoryPort) { }
 
-    async execute(id: number, updatedUser: Partial<UserEntity>): Promise<UserEntity> {
+    async execute(id: string, updatedUser: Partial<UserEntity>): Promise<UserEntity> {
         try {
             const existingUser = await this.userRepository.findOneById(id);
             if (!existingUser) {
