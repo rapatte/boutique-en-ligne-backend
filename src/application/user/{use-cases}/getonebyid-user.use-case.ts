@@ -3,7 +3,7 @@ import { UserEntity } from "src/domain/entities/user.entity";
 import { UserRepositoryPort } from "src/domain/ports/user-repository.port";
 
 @Injectable()
-export class GetOneUserById {
+export class GetOneUserByIdUseCase {
     constructor(private readonly userRepository: UserRepositoryPort) { }
 
     async execute(id: string): Promise<UserEntity> {
