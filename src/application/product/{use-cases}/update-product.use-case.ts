@@ -17,10 +17,10 @@ export class UpdateProductUseCase {
             }
 
             if (updatedProduct.name && updatedProduct.name !== existingProduct.name) {
-                const productWithSameName = await this.productRepository.findOneByName(updatedProduct.name)
-                if (productWithSameName) {
-                    throw new ConflictException('Un produit du même nom existe déjà.')
-                }
+                // const productWithSameName = await this.productRepository.searchProducts(updatedProduct.name)
+                // if (productWithSameName) {
+                //     throw new ConflictException('Un produit du même nom existe déjà.')
+                // }
             }
 
             return await this.productRepository.update(id, updatedProduct);

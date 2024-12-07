@@ -9,6 +9,7 @@ import { GetAllProductUseCase } from "./{use-cases}/getall-product.use-case";
 import { GetOneProductById } from "./{use-cases}/getonebyid-product.use-case";
 import { UpdateProductUseCase } from "./{use-cases}/update-product.use-case";
 import { DeleteProductUseCase } from "./{use-cases}/delete-product.use-case";
+import { SearchProductUseCase } from "./{use-cases}/search-product.use-case";
 
 @Module({
     imports: [TypeOrmModule.forFeature([ProductEntity])],
@@ -22,6 +23,7 @@ import { DeleteProductUseCase } from "./{use-cases}/delete-product.use-case";
         CreateProductUseCase,
         GetAllProductUseCase,
         GetOneProductById,
+        SearchProductUseCase,
         UpdateProductUseCase,
         DeleteProductUseCase,
     ],

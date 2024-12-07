@@ -5,6 +5,7 @@ import { Repository } from "typeorm";
 import { ProductEntity } from "../entities/product.entity";
 import { ProductMapper } from "src/shared/utils/mappers";
 import { v4 as uuidv4 } from 'uuid';
+import { SearchProductDto } from "src/shared/dtos/product.dto";
 
 @Injectable()
 export class ProductRepository implements ProductRepositoryPort {
@@ -30,8 +31,26 @@ export class ProductRepository implements ProductRepositoryPort {
         return this.repository.findOneBy({ id });
     }
 
-    findOneByName(name: string): Promise<ProductEntity> {
-        return this.repository.findOneBy({ name })
+    async searchProducts(searchCriteria: SearchProductDto): Promise<ProductEntity[]> {
+        const query = this.repository.createQueryBuilder('product')
+
+        if (searchCriteria.name) {
+            query.andWhere('product.name LIKE :name', {name: `%${searchCriteria.name}%`})
+        }
+
+        if (searchCriteria.category) {
+            query.andWhere('product.category LIKE :category', {category: `%${searchCriteria.category}%`})
+        }
+
+        if (searchCriteria.minPrice) {
+            query.andWhere('product.price >= :minPrice', {minPrice: `${searchCriteria.minPrice}`})
+        }
+
+        if (searchCriteria.maxPrice) {
+            query.andWhere('product.price <= :maxPrice', {maxPrice: `${searchCriteria.maxPrice}`})
+        }
+
+        return await query.getMany();
     }
 
     update(id: string, product: Partial<ProductEntity>): Promise<ProductEntity | null> {

@@ -1,7 +1,7 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, ParseIntPipe, Patch, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Query } from "@nestjs/common";
 import { ProductService } from "./product.service";
 import { ProductEntityDomain } from "src/domain/entities/product.entity";
-import { ProductDto } from "src/shared/dtos/product.dto";
+import { ProductDto, SearchProductDto } from "src/shared/dtos/product.dto";
 
 @Controller('products')
 export class ProductController {
@@ -19,12 +19,18 @@ export class ProductController {
         return await this.productService.getAllProducts();
     }
 
+    @Get('/search')
+    @HttpCode(HttpStatus.OK)
+    async SearchProducts(@Query() searchCriteria: SearchProductDto): Promise<ProductEntityDomain[]> {
+        return await this.productService.searchProducts(searchCriteria);
+    }
+
     @Get(':id')
     @HttpCode(HttpStatus.OK)
     async getOneById(@Param('id') id: string): Promise<ProductEntityDomain> {
         return await this.productService.getOneProductById(id);
     }
- 
+
     @Patch(':id')
     @HttpCode(HttpStatus.OK)
     async updateProduct(
