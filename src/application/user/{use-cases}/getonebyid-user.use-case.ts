@@ -1,12 +1,15 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
-import { UserEntity } from "src/domain/entities/user.entity";
+import { Inject, Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
+import { UserEntityDomain } from "src/domain/entities/user.entity";
 import { UserRepositoryPort } from "src/domain/ports/user-repository.port";
 
 @Injectable()
 export class GetOneUserByIdUseCase {
-    constructor(private readonly userRepository: UserRepositoryPort) { }
+    constructor(
+        @Inject('UserRepositoryPort')
+        private readonly userRepository: UserRepositoryPort
+    ) { }
 
-    async execute(id: string): Promise<UserEntity> {
+    async execute(id: string): Promise<UserEntityDomain> {
         try {
             const user = await this.userRepository.findOneById(id);
             if (!user) {

@@ -1,12 +1,15 @@
-import { ConflictException, Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
-import { UserEntity } from "src/domain/entities/user.entity";
+import { ConflictException, Inject, Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
+import { UserEntityDomain } from "src/domain/entities/user.entity";
 import { UserRepositoryPort } from "src/domain/ports/user-repository.port";
 
 @Injectable()
 export class UpdateUserUseCase {
-    constructor(private readonly userRepository: UserRepositoryPort) { }
+    constructor(
+        @Inject('UserRepositoryPort')
+        private readonly userRepository: UserRepositoryPort
+    ) { }
 
-    async execute(id: string, updatedUser: Partial<UserEntity>): Promise<UserEntity> {
+    async execute(id: string, updatedUser: Partial<UserEntityDomain>): Promise<UserEntityDomain> {
         try {
             const existingUser = await this.userRepository.findOneById(id);
             if (!existingUser) {

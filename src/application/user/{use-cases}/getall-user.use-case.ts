@@ -1,12 +1,15 @@
-import { Injectable, InternalServerErrorException } from "@nestjs/common";
-import { UserEntity } from "src/domain/entities/user.entity";
+import { Inject, Injectable, InternalServerErrorException } from "@nestjs/common";
+import { UserEntityDomain } from "src/domain/entities/user.entity";
 import { UserRepositoryPort } from "src/domain/ports/user-repository.port";
 
 @Injectable()
 export class GetAllUserUseCase {
-    constructor(private readonly userRepository: UserRepositoryPort) {}
+    constructor(
+        @Inject('UserRepositoryPort')
+        private readonly userRepository: UserRepositoryPort
+    ) {}
 
-    async execute(): Promise<UserEntity[]> {
+    async execute(): Promise<UserEntityDomain[]> {
         try {
             return this.userRepository.findAll();
         } catch (error) {

@@ -4,7 +4,7 @@ import { DeleteUserUseCase } from "./{use-cases}/delete-user.use-case";
 import { UpdateUserUseCase } from "./{use-cases}/update-user.use-case";
 import { GetOneUserByIdUseCase } from "./{use-cases}/getonebyid-user.use-case";
 import { GetAllUserUseCase } from "./{use-cases}/getall-user.use-case";
-import { UserEntity } from "src/domain/entities/user.entity";
+import { UserEntityDomain } from "src/domain/entities/user.entity";
 
 @Injectable()
 export class UserService {
@@ -16,19 +16,19 @@ export class UserService {
         private readonly getAllUserUseCase: GetAllUserUseCase,
     ) {}
 
-    createUser(user: UserEntity): Promise<UserEntity> {
+    createUser(user: UserEntityDomain): Promise<UserEntityDomain> {
         return this.createUserUseCase.execute(user);
     }
 
-    getAllUser(): Promise<UserEntity[]> {
+    getAllUser(): Promise<UserEntityDomain[]> {
         return this.getAllUserUseCase.execute();
     }
 
-    getOneUserById(id: string): Promise<UserEntity> {
+    getOneUserById(id: string): Promise<UserEntityDomain> {
         return this.getOneUserByIdUseCase.execute(id);
     }
 
-    updateUser(id: string, user: Partial<UserEntity>): Promise<UserEntity> {
+    updateUser(id: string, user: Partial<UserEntityDomain>): Promise<UserEntityDomain> {
         return this.updateUserUseCase.execute(id, user);
     }
 
