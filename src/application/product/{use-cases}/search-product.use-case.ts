@@ -18,7 +18,7 @@ export class SearchProductUseCase {
                 !searchCriteria.minPrice &&
                 !searchCriteria.name
             ) {
-                throw new BadRequestException('La barre de recherche doit contenir')
+                throw new BadRequestException('La barre de recherche doit contenir au moins un critère.')
             }
             return this.productRepository.searchProducts(searchCriteria)
         } catch (error) {
