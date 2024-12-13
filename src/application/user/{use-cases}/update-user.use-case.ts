@@ -20,9 +20,10 @@ export class UpdateUserUseCase {
                 if (userWithSameEmail) {
                     throw new ConflictException(`Le mail ${userWithSameEmail.email} est déjà utilisé.`)
                 }
-
-                return await this.userRepository.update(id, updatedUser);
+                
             }
+            await this.userRepository.update(id, updatedUser);
+            return Object.assign(existingUser, updatedUser)
         } catch (error) {
             if (error instanceof NotFoundException || error instanceof ConflictException) {
                 throw error
