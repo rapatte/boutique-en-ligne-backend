@@ -4,8 +4,8 @@ import { ProductRepositoryPort } from "src/domain/ports/product-repository.port"
 import { Repository } from "typeorm";
 import { ProductEntity } from "../entities/product.entity";
 import { ProductMapper } from "src/shared/utils/mappers";
-import { v4 as uuidv4 } from 'uuid';
 import { SearchProductDto } from "src/shared/dtos/product.dto";
+import { ProductEntityDomain } from "src/domain/entities/product.entity";
 
 @Injectable()
 export class ProductRepository implements ProductRepositoryPort {
@@ -14,12 +14,10 @@ export class ProductRepository implements ProductRepositoryPort {
         private readonly repository: Repository<ProductEntity>,
     ) { }
 
-    async create(product: ProductEntity): Promise<ProductEntity> {
-            product.id = uuidv4();
-        const productEntity = ProductMapper.toPersistence(product);
-        console.log('Product Entity before save:', productEntity);
-
+    async create(product: ProductEntity): Promise<ProductEntityDomain> {
+        const productEntity = ProductMapper.toPersistence(product);                
         const savedEntity = await this.repository.save(productEntity);
+        
         return ProductMapper.toDomain(savedEntity);
     }
 

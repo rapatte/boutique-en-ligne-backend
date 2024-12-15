@@ -1,7 +1,7 @@
 import { BadRequestException, ConflictException, ForbiddenException, Inject, Injectable, InternalServerErrorException } from "@nestjs/common";
 import { ProductEntityDomain } from "src/domain/entities/product.entity";
 import { ProductRepositoryPort } from "src/domain/ports/product-repository.port";
-import { ProductDto } from "src/shared/dtos/product.dto";
+import { ProductEntity } from "src/infrastructure/database/typeorm/entities/product.entity";
 import { v4 } from "uuid";
 
 @Injectable()
@@ -11,8 +11,7 @@ export class CreateProductUseCase {
         private readonly productRepository: ProductRepositoryPort
     ) { }
 
-    async execute(productDto: ProductDto): Promise<ProductEntityDomain> {
-        const product = new ProductEntityDomain(productDto)
+    async execute(product: ProductEntity): Promise<ProductEntityDomain> {
         try {
             if (product.id == undefined) {
                 product.id = v4();
@@ -20,19 +19,20 @@ export class CreateProductUseCase {
             const existingProduct = await this.productRepository.findOneById(product.id);
             if (existingProduct) {
                 throw new ConflictException(`Un produit avec l'id ${product.id} existe déjà.`)
-            }
+            }            
+            
             if (
-                !productDto.price ||
-                !productDto.description ||
-                !productDto.name
+                !product.price ||
+                !product.description ||
+                !product.name ||
+                !product.category
             ) {
                 throw new BadRequestException('Caractéristique(s) du produit manquante(s).')
             }
-            if (typeof productDto.price !== 'number') {
+            if (typeof product.price !== 'number') {
                 throw new ForbiddenException('Le prix doit être un nombre.')
             }
-
-            return await this.productRepository.create(product);
+            return await this.productRepository.create(product);            
         } catch (error) {
             if (
                 error instanceof ConflictException ||

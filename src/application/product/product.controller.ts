@@ -21,7 +21,7 @@ export class ProductController {
 
     @Get('/search')
     @HttpCode(HttpStatus.OK)
-    async SearchProducts(@Query() searchCriteria: SearchProductDto): Promise<ProductEntityDomain[]> {
+    async searchProducts(@Query() searchCriteria: SearchProductDto): Promise<ProductEntityDomain[]> {
         return await this.productService.searchProducts(searchCriteria);
     }
 

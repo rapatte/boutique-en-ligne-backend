@@ -15,6 +15,9 @@ export class ProductEntity {
     @Column({type: 'decimal', precision: 10, scale: 2})
     price: number;
 
+    @Column()
+    category: string;
+
     @CreateDateColumn({type: 'timestamp'})
     createdAt?: Date;
 

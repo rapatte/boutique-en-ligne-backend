@@ -10,6 +10,7 @@ export class ProductMapper {
             name: product.name,
             price: product.price,
             description: product.description,
+            category: product.category
         });
         return productDomain;
     }
@@ -20,6 +21,7 @@ export class ProductMapper {
         productEntity.name = product.name;
         productEntity.price = product.price;
         productEntity.description = product.description;
+        productEntity.category = product.category
         return productEntity;
     }
 }
